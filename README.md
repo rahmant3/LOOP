@@ -7,7 +7,7 @@ Based on the real-life [LOOP game](http://www.loop-the-game.com/) presented on [
 
 ## How to Use:
 
-Download source files, and run LOOP.exe
+Download and run source files with [Processing](https://processing.org/download/).
 
 ## Rules:
 
