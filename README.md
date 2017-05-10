@@ -3,8 +3,6 @@ Pool on an elliptical table.
 
 Based on the real-life [LOOP game](http://www.loop-the-game.com/) presented on [Numberphile](https://www.youtube.com/watch?v=4KHCuXN2F3I) by Alex Bellos.
 
-[Demo Gif](https://gfycat.com/MajorArtisticErne)
-
 ## How to Use:
 
 Download and run source files with [Processing](https://processing.org/download/).
@@ -22,6 +20,10 @@ A player who pots the black with his or her colour still on the table loses the 
 The key to the strategy of LOOP is to consider the focus points. When the path of a ball goes through a focus point, its path will always continue to the other focus point due to elliptical geometry. Learn more about it in [this video](https://www.youtube.com/watch?v=4KHCuXN2F3I).
 
 Move the ball by holding down the mouse and releasing it.
+
+## Demo Animation:
+
+![Demo Gif](https://cloud.githubusercontent.com/assets/24502666/25898564/a7126874-355a-11e7-955e-4a1292cc60bb.gif)
 
 ## References:
 Numberphile channel:      http://youtube.com/numberphile
