@@ -1,21 +1,21 @@
 /*
 rahmant3
-Main Class: Handles all UI behaviors
-
-github: https://github.com/rahmant3/LOOP
-
-References:
-numberphile:
-  http://youtube.com/numberphile
-LOOP's official website:
-  http://www.loop-the-game.com/
-  
-Closest point to an ellipse algorithm by user Spektre: 
-  http://stackoverflow.com/questions/36260793/algorithm-for-shortest-distance-from-a-point-to-an-elliptic-arc
-Simple ball to ball collision, NCSA at University of Illinois:
-  http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
-
-*/
+ Main Class: Handles all UI behaviors
+ 
+ github: https://github.com/rahmant3/LOOP
+ 
+ References:
+ numberphile:
+ http://youtube.com/numberphile
+ LOOP's official website:
+ http://www.loop-the-game.com/
+ 
+ Closest point to an ellipse algorithm by user Spektre: 
+ http://stackoverflow.com/questions/36260793/algorithm-for-shortest-distance-from-a-point-to-an-elliptic-arc
+ Simple ball to ball collision, NCSA at University of Illinois:
+ http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
+ 
+ */
 
 private final int STATE_GAME = 1;
 private final int STATE_PRACTICE_MODE = 2;
@@ -42,7 +42,7 @@ private final String[] options = {"New\nGame", "Practice\nMode", "How to\nPlay",
 
 int BORDER = 5; 
 int WHITESP = 20;
-  
+
 Vector2D startVector;
 
 MainGame game;
@@ -52,14 +52,14 @@ Board ellipse;
 void setup() {
   game = new MainGame();
   ellipse = game.board;
-  
+
   usercommandhandler = new UserCommandHandler(game);
-  
+
   //usercommandhandler.execute(new Command(CMD_RESET));
   startVector = null;
-  
+
   game.reset();
-  
+
   size(700, 650);
   colorMode(HSB);
 }
@@ -67,40 +67,39 @@ void setup() {
 void draw() {
   background(0);
   noStroke();
-  
+
   drawHeader();
   drawButtons();
   game.update();
-  
-  if(game.show == SHOW_GAME) {
+
+  if (game.show == SHOW_GAME) {
     if (game.state == STATE_GAME) { 
       displayTurn();
       displayScore();
     }
     translate(width/2, height/2);
-    
+
     drawBoard(ellipse);
     drawFoci();
-    
+
     for (int i = 0; i < game.physics.gB.SIZE; i++) {
       if (game.physics.gB.inPlay[i]) {
         Ball b = game.physics.gB.balls[i];
         drawBall(b);
       }
     }
+
     drawIndicator();
-    
-    
   } else if (game.show == SHOW_WINNER) {
-    
+
     displayWinner();
     displayScore();
-    
+
     translate(width/2, height/2);
-    
+
     drawBoard(ellipse);
     drawFoci();
-    
+
     for (int i = 0; i < game.physics.gB.SIZE; i++) {
       if (game.physics.gB.inPlay[i]) {
         Ball b = game.physics.gB.balls[i];
@@ -110,7 +109,6 @@ void draw() {
   } else if (game.show == SHOW_HELP || game.show == SHOW_ABOUT) {
     drawTextBox(game.displayText);
   }
-  
 }
 
 void displayWinner() {
@@ -130,7 +128,7 @@ void displayScore() {
   noStroke();
   fill(255);
   textSize(15);
-  
+
   fill(360, 240, 250);
   text("Player 1: " + game.player1_score, width-100, height - 50);
   fill(40, 230, 255);
@@ -161,7 +159,7 @@ void drawButtons() {
   rect(BORDER + WHITESP + 100, BORDER + WHITESP + 0, 100 - 1.2* (WHITESP + BORDER), 100 - 2 * (WHITESP + BORDER));
   rect(BORDER + WHITESP + 200, BORDER + WHITESP + 0, 100 - 1.2* (WHITESP + BORDER), 100 - 2 * (WHITESP + BORDER));
   rect(BORDER + WHITESP + 300, BORDER + WHITESP + 0, 100 - 1.2* (WHITESP + BORDER), 100 - 2 * (WHITESP + BORDER));
-  
+
   fill(255);
   stroke(0);
   strokeWeight(10);
@@ -173,29 +171,29 @@ void drawButtons() {
   popMatrix();
 }
 void drawHeader() {
-    String text = "";
-    int show = game.show;
-    int state = game.state;
-    if ( (show == SHOW_GAME || show == SHOW_WINNER ) && state == STATE_GAME) { 
-      text = headers[0];
-    } else if (show == SHOW_GAME && state == STATE_PRACTICE_MODE) {
-      text = headers[1];
-    } else if (show == SHOW_HELP) {
-      text = headers[2];
-    } else if (show == SHOW_ABOUT) {
-      text = headers[3];
-    }
-    fill(255);
-    stroke(1);
-    textSize(60);
-    text(text, 10, 50);
+  String text = "";
+  int show = game.show;
+  int state = game.state;
+  if ( (show == SHOW_GAME || show == SHOW_WINNER ) && state == STATE_GAME) { 
+    text = headers[0];
+  } else if (show == SHOW_GAME && state == STATE_PRACTICE_MODE) {
+    text = headers[1];
+  } else if (show == SHOW_HELP) {
+    text = headers[2];
+  } else if (show == SHOW_ABOUT) {
+    text = headers[3];
+  }
+  fill(255);
+  stroke(1);
+  textSize(60);
+  text(text, 10, 50);
 }
 
 void drawFoci() {
   //Draw the border around the hole
   //Draw the hole
   //Draw the other foci
-  
+
   noStroke();
   fill(10, 200, 200);
   ellipse((float)ellipse.foci[0], 0, 30, 30);
@@ -207,13 +205,13 @@ void drawFoci() {
 
 void drawIndicator() {
   if (startVector != null) {
-    
+
     //draw indicator line
     Vector2D direction = startVector.copy();
     direction.sub(mouseX, mouseY);
-    
+
     Ball cueBall = game.physics.gB.balls[0];
-    
+
     direction.sub(cueBall.pos);
     //direction = direction.unit();
     if (direction.mag() > 250) {
@@ -221,29 +219,29 @@ void drawIndicator() {
       direction.mult(250);
     }
     direction.mult(-1);
-    
+
     fill(255);
     stroke(250, 200, 150);
     strokeWeight(3);
     line((float) cueBall.pos.x, (float) cueBall.pos.y, (float) direction.x, (float) direction.y);
-    
+
     Vector2D mid = cueBall.pos.copy();
     mid = mid.unit();
     mid.mult(cueBall.pos.mag()/2);
-    
+
     mid.sub(direction);
     mid.mult(-0.5);
-    
+
     //draw indicator text
     double magD = 100 * direction.mag()/250;
     magD *= 100;
     int magI = (int) magD;
     magD = (double) magI;
     magD /= 100;
-    
+
     fill(0);
     textSize(20);
-    text(magD + "", (float) mid.x, (float) mid.y); 
+    text(magD + "", (float) mid.x, (float) mid.y);
   }
 }
 
@@ -251,11 +249,11 @@ void drawIndicator() {
 void drawBall(Ball b) {
   float xPos = (float) b.pos.x;
   float yPos = (float) b.pos.y;
-  
+
   noStroke();
-  
+
   double hue = b.getHue();
-  
+
   if (hue == -1) {
     fill(360, 240, 250);
   } else if (hue== -2) {
@@ -264,25 +262,24 @@ void drawBall(Ball b) {
     fill((int) hue);
   }
   ellipse(xPos, yPos, (int) b.radius * 2, (int) b.radius * 2);
-  
 }
 
 void drawBoard(Board br) {
   noStroke();
-  
+
   int h = br.getHeight();
   int w = br.getWidth();
-  
+
   fill(75, 100, 150);
   ellipse(0, 0, w+50, h+50);
-  
+
   fill(75, 100, 200);
   ellipse(0, 0, w, h);
 }
 
 void mousePressed() {
-  
-  if (withInRect(WHITESP + 0, WHITESP + height - 100, 100 - WHITESP,  height - 100 + 100 - 2 * WHITESP)) {
+
+  if (withInRect(WHITESP + 0, WHITESP + height - 100, 100 - WHITESP, height - 100 + 100 - 2 * WHITESP)) {
     usercommandhandler.execute(new Command(CMD_SHOW_GAME));
   } else if (withInRect(WHITESP + 100, WHITESP + height - 100, 100 - WHITESP, height - 100 + 100 - 2 * WHITESP)) {
     usercommandhandler.execute(new Command(CMD_PRACTICE_MODE));
@@ -294,29 +291,28 @@ void mousePressed() {
     Ball cueBall = game.physics.gB.balls[0];
     startVector = cueBall.pos.copy();
     startVector.add(new Vector2D(width/2, height/2));
-  }  else if (game.show == SHOW_WINNER) {
+  } else if (game.show == SHOW_WINNER) {
     usercommandhandler.execute(new Command(CMD_SHOW_GAME));
   }
 }
 
 void mouseReleased() {
   if (startVector != null) {
-    
+
     startVector.sub(mouseX, mouseY);
     startVector.div(20);
-    
+
     usercommandhandler.execute(new Command(CMD_FORCE, startVector));
     startVector = null;
   }
-  
+
   System.out.println(mouseX + " " + mouseY);
 }
 
 void keyPressed() {
-  
 }
 
 
 public boolean withInRect (double xin, double yin, double w, double h) {
-    return (mouseX > xin && mouseX < xin + w && mouseY > yin && mouseY < yin + h);
+  return (mouseX > xin && mouseX < xin + w && mouseY > yin && mouseY < yin + h);
 }

@@ -1,21 +1,21 @@
 /*
 rahmant3
-Instance of billiard ball, handles collision detection
-
-github: https://github.com/rahmant3/LOOP
-
-References:
-numberphile:
-  http://youtube.com/numberphile
-LOOP's official website:
-  http://www.loop-the-game.com/
-  
-Closest point to an ellipse algorithm by user Spektre: 
-  http://stackoverflow.com/questions/36260793/algorithm-for-shortest-distance-from-a-point-to-an-elliptic-arc
-Simple ball to ball collision, NCSA at University of Illinois:
-  http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
-
-*/
+ Instance of billiard ball, handles collision detection
+ 
+ github: https://github.com/rahmant3/LOOP
+ 
+ References:
+ numberphile:
+ http://youtube.com/numberphile
+ LOOP's official website:
+ http://www.loop-the-game.com/
+ 
+ Closest point to an ellipse algorithm by user Spektre: 
+ http://stackoverflow.com/questions/36260793/algorithm-for-shortest-distance-from-a-point-to-an-elliptic-arc
+ Simple ball to ball collision, NCSA at University of Illinois:
+ http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
+ 
+ */
 
 public class Ball {
 
@@ -24,7 +24,7 @@ public class Ball {
   int hue;
   double radius;
   String name;
-  
+
   double TERMINAL = 10;
   double FRICTION = -0.005;
   double MIN_SPEED = 0.2;
@@ -45,18 +45,18 @@ public class Ball {
     } else {
       vel.add(frictional_force);
     }
-    
+
     pos.add(vel);
   }
-  
+
   public void applyForce(Vector2D force) {
     if (force.mag() > TERMINAL) { 
       force = force.unit();
       force.mult(TERMINAL);
     }
-    
+
     vel.add(force);
-    
+
     if (vel.mag() > TERMINAL) {
       vel = vel.unit();
       vel.mult(TERMINAL);
@@ -64,21 +64,16 @@ public class Ball {
   }
 
   public boolean collides(Ball b) {
-    
+
     double dx = pos.getX() - b.getPos().getX();
     double dy = pos.getY() - b.getPos().getY();
 
     double rSum = radius + b.getRadius();
 
-    if (!((dx * dx + dy * dy) < (rSum * rSum))) {
-      return false;
-    } else {
-      return true;
-    }
-
+    return (dx * dx + dy * dy) < (rSum * rSum);
   }
 
-//reference: http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
+  //reference: http://archive.ncsa.illinois.edu/Classes/MATH198/townsend/math.html
   public void resolveCollision(Ball b) {
     //hack to prevent (some) rubber banding
     if (b.vel.mag() == 0 && this.vel.mag() > 5) {
@@ -86,46 +81,45 @@ public class Ball {
       b.vel = b.vel.unit();
       b.vel.mult(0.1);
     }
-    
+
     if (this.vel.mag() == 0 && b.vel.mag() > 5) {
       this.vel = b.vel.copy();
       this.vel = this.vel.unit();
       this.vel.mult(0.1);
     }
-    
-    
+
+
     Vector2D n = this.pos.copy();
     n.sub(b.pos);
     n.div(n.mag());
-    
+
     Vector2D nminus = n.copy();
     nminus.mult(-1);
-    
+
     Vector2D vn1 = nminus.copy();
     vn1.mult(nminus.dot(this.vel));
-    
+
     Vector2D vn2 = n.copy();
     vn2.mult(n.dot(b.vel));
-    
-    
+
+
     Vector2D vt1 = vn1.copy();
     vt1.sub(this.vel);
     Vector2D vt2 = vn2.copy();
     vt2.sub(b.vel);
-    
+
     Vector2D v1new = vt1.copy();
     v1new.sub(vn2);
     Vector2D v2new = vt2.copy();
     v2new.sub(vn1);
-    
+
     this.vel = v1new;
     b.vel = v2new;
-  
+
     this.pos.add(vel);
     b.pos.add(b.vel);
-  
   }
-  
+
   public Vector2D getPos() {
     return pos;
   }
